@@ -240,7 +240,7 @@
 			if (song.loaded)
 			{
 				visualizer.graphics.clear();
-				Vizualization.BuildWaveForm(visualizer,sqw);
+				Vizualization.BuildWaveForm(visualizer,sqw,stage.orientation);
 			}
 		}
 		
