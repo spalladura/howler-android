@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Graphic version="2.0" xmlns="http://ns.adobe.com/fxg/2008" xmlns:d="http://ns.adobe.com/fxg/2008/dt" xmlns:fc="http://ns.adobe.com/flashcatalyst/2009"  viewHeight= "81" viewWidth= "480">
+	<Library>
+	</Library>
+
+	<Group d:userLabel="Layer_1" d:type="layer">
+		<Rect x="0" y="0" width="480" height="81" alpha="1" blendMode="normal" radiusX="0" radiusY="0">
+			<fill>
+				<SolidColor color="#003300"/>
+			</fill>
+		</Rect>
+		<Path winding="evenOdd" data="M 0 0 L 1 0 L 1 81 L 0 81 L 0 0 Z " blendMode="normal" alpha="1">
+			<fill>
+				<SolidColor color="#33ff00"/>
+			</fill>
+		</Path>
+		<Path winding="evenOdd" data="M 479 0 L 480 0 L 480 81 L 479 81 L 479 0 Z " blendMode="normal" alpha="1">
+			<fill>
+				<SolidColor color="#33ff00"/>
+			</fill>
+		</Path>
+		<Path winding="evenOdd" data="M 0 0 L 480 0 L 480 1 L 0 1 L 0 0 Z " blendMode="normal" alpha="1">
+			<fill>
+				<SolidColor color="#33ff00"/>
+			</fill>
+		</Path>
+		<Path winding="evenOdd" data="M 0 80 L 480 80 L 480 81 L 0 81 L 0 80 Z " blendMode="normal" alpha="1">
+			<fill>
+				<SolidColor color="#33ff00"/>
+			</fill>
+		</Path>
+	</Group>
+</Graphic>
