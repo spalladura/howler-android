@@ -1,0 +1,14 @@
+#summary Project description for Howler Android
+
+= Introduction =
+
+Howler is an ActionScript MP3 player written using the Adobe Integrated Runtime (AIR) platform.  
+
+= Details =
+
+*Application Features:*
+
+  * Loads MP3 sound file from the Android file system.
+  * Displays ID3 meta-data.
+  * Displays visual representation of spectrum waveform.
+  * Redraws display for device tilting.
