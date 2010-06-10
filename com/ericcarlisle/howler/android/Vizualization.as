@@ -48,10 +48,28 @@ package com.ericcarlisle.howler.android
 			var top:int = 0;							// The highest byte value in a group.
 			var samplesPerGroup:int = 63;				// Number of bytes in a group.
 			var barWidth:int = 50;						// Width of rectangle that represents a group of bytes.
-			var vizualizerHeight:uint = squareWidth*3;	// Height of the visualizer sprite.
-			var x:int;									// x-coordinate of each vizualization bar.
+			var vizualizerHeight:uint;					// Height of the visualizer sprite.
+			var barX:int;								// x-coordinate of each vizualization bar.
+			var y:int;									// y-coordinate for the entire visualization.
+			var xMargin:int;							// Left margin for the waveform visualization. 
 			var h:int;									// height of each vizualization bar.
 
+			// Determine the left margin based on device orientation.
+			if (orientation == StageOrientation.ROTATED_RIGHT)
+			{
+				xMargin = squareWidth*2
+				barWidth = 70;
+				y = squareWidth*2;
+				vizualizerHeight = squareWidth*2;
+			}
+			else
+			{
+				xMargin = squareWidth * 0.5;
+				barWidth = 50;
+				y = squareWidth*3;
+				vizualizerHeight = squareWidth*3;
+			}
+			
 			// Place spectrum data in a bytearray.
 			SoundMixer.computeSpectrum(bytes, false, 0);
 			
@@ -77,9 +95,9 @@ package com.ericcarlisle.howler.android
 				// For each group, draw a rectangle using n.
 				else if (i != 0)
 				{
-					x = (squareWidth/2) + ((i/samplesPerGroup)-1) * barWidth;
+					barX = xMargin + ((i/samplesPerGroup)-1) * barWidth;
 					h = -Math.floor(Math.abs(b * vizualizerHeight));
-					g.drawRect(x,squareWidth*3,barWidth-5,h);
+					g.drawRect(barX,y,barWidth-5,h);
 					top = 0;
 				}
 			//
