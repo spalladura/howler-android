@@ -45,11 +45,10 @@ package com.ericcarlisle.howler.android
 		{
 			var bytes:ByteArray = new ByteArray();		// ByteArray containing spectrum data.
 			var n:Number = 0;							// Sampled float of bytearray data.
-			var sum:int = 0;							// Sum of bytes collected in a group.
-			var ave:int = 0;							// Average of bytes collected in a group.
+			var top:int = 0;							// The highest byte value in a group.
 			var samplesPerGroup:int = 63;				// Number of bytes in a group.
 			var barWidth:int = 50;						// Width of rectangle that represents a group of bytes.
-			var vizualizerHeight:uint = squareWidth*4;	// Height of the visualizer sprite.
+			var vizualizerHeight:uint = squareWidth*3;	// Height of the visualizer sprite.
 			var x:int;
 
 			// Place spectrum data in a bytearray.
@@ -68,14 +67,13 @@ package com.ericcarlisle.howler.android
 				n = Math.floor(Math.abs(bytes.readFloat() * vizualizerHeight));
 				if (i % samplesPerGroup != 0)
 				{
-					sum = sum + n;
+					if (n > top) top = n;
 				}
 				else if (i != 0)
 				{
-					ave = sum/samplesPerGroup;
 					x = (squareWidth/2) + ((i/samplesPerGroup)-1) * barWidth;
-					g.drawRect(x,squareWidth*3,barWidth-5,-ave);
-					sum = 0;
+					g.drawRect(x,squareWidth*3,barWidth-5,-top);
+					top = 0;
 				}
 			}
 			g.endFill();
