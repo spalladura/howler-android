@@ -97,24 +97,8 @@
 			stage.align = StageAlign.TOP_LEFT; 
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 
-			// Create background sprite for wireframe grid.
-			background = new Sprite();
-			
-			// Draw squares for wireframe grid.
-			for (var i:uint=0; i<stageWidth; i=i+sqw)
-			{
-				for (var j:uint=0; j<stageHeight; j=j+sqw)
-				{
-					var square:Sprite = new Sprite();
-					square.graphics.beginFill(0x000000,1);
-					square.graphics.lineStyle(1,0x00FF00,0.5);
-					square.graphics.drawRect(0,0,sqw,sqw);
-					square.graphics.endFill();
-					square.x = i;
-					square.y = j;
-					background.addChild(square);
-				}
-			}
+			// Create background sprite with wireframe grid.
+			background = Vizualization.buildWireFrame(stageWidth,stageHeight,sqw);
 			
 			// Add wireframe grid to stage.
 			this.addChild(background);

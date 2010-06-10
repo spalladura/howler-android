@@ -11,7 +11,31 @@ package com.ericcarlisle.howler.android
 		 * Class Constructor
 		 */
 		public function Vizualization(){}
-
+		
+		/**
+		 * Builds the wireframe background
+		 */
+		public static function buildWireFrame(stageWidth:Number, stageHeight:Number, squareWidth:Number):Sprite
+		{	
+			var sprite:Sprite = new Sprite();
+			
+			// Draw squares for wireframe grid.
+			for (var i:uint=0; i<stageWidth; i=i+squareWidth)
+			{
+				for (var j:uint=0; j<stageHeight; j=j+squareWidth)
+				{
+					var square:Sprite = new Sprite();
+					square.graphics.beginFill(0x000000,1);
+					square.graphics.lineStyle(1,0x00FF00,0.5);
+					square.graphics.drawRect(0,0,squareWidth,squareWidth);
+					square.graphics.endFill();
+					square.x = i;
+					square.y = j;
+					sprite.addChild(square);
+				}
+			}
+			return sprite;			
+		}
 	
 		/**
 		 * Formats ID3 metadata based on device tilt. 

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Graphic version="2.0" xmlns="http://ns.adobe.com/fxg/2008" xmlns:d="http://ns.adobe.com/fxg/2008/dt" xmlns:fc="http://ns.adobe.com/flashcatalyst/2009"  viewHeight= "60" viewWidth= "60">
+	<Library>
+	</Library>
+
+	<Group d:userLabel="Layer_1" d:type="layer">
+		<Rect x="0" y="0" width="60" height="60" alpha="1" blendMode="normal" radiusX="0" radiusY="0">
+			<fill>
+				<SolidColor color="#00ff00"/>
+			</fill>
+		</Rect>
+	</Group>
+</Graphic>
