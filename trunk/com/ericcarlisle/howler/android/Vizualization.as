@@ -41,15 +41,16 @@ package com.ericcarlisle.howler.android
 		/**
 		 * Updates the waveform visualizer display. 
 		 */
-		public static function BuildWaveForm(sprite:Sprite, squareWidth:Number):Sprite
+		public static function BuildWaveForm(sprite:Sprite, squareWidth:Number,  orientation:String):Sprite
 		{
 			var bytes:ByteArray = new ByteArray();		// ByteArray containing spectrum data.
-			var n:Number = 0;							// Sampled float of bytearray data.
+			var b:Number = 0;							// Sampled float of bytearray data.
 			var top:int = 0;							// The highest byte value in a group.
 			var samplesPerGroup:int = 63;				// Number of bytes in a group.
 			var barWidth:int = 50;						// Width of rectangle that represents a group of bytes.
 			var vizualizerHeight:uint = squareWidth*3;	// Height of the visualizer sprite.
-			var x:int;
+			var x:int;									// x-coordinate of each vizualization bar.
+			var h:int;									// height of each vizualization bar.
 
 			// Place spectrum data in a bytearray.
 			SoundMixer.computeSpectrum(bytes, false, 0);
@@ -62,19 +63,26 @@ package com.ericcarlisle.howler.android
 			g.lineStyle(1,0x00FF00,0.50);
 			g.beginFill(0x00FF00, 0.25);
 			
+			// Iterate through all bytes.
 			for (var i:int = 0; i < 512; i++)
 			{
-				n = Math.floor(Math.abs(bytes.readFloat() * vizualizerHeight));
+				// Find the current byte.
+				b = bytes.readFloat();
+				
+				// For the batch of bytes in the group, keep the greatest byte for n.
 				if (i % samplesPerGroup != 0)
 				{
-					if (n > top) top = n;
+					if (b > top) top = b;
 				}
+				// For each group, draw a rectangle using n.
 				else if (i != 0)
 				{
 					x = (squareWidth/2) + ((i/samplesPerGroup)-1) * barWidth;
-					g.drawRect(x,squareWidth*3,barWidth-5,-top);
+					h = -Math.floor(Math.abs(b * vizualizerHeight));
+					g.drawRect(x,squareWidth*3,barWidth-5,h);
 					top = 0;
 				}
+			//
 			}
 			g.endFill();
 			
