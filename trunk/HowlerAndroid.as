@@ -27,7 +27,11 @@
 	 * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 	 * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 	 * OTHER DEALINGS IN THE SOFTWARE.
-	 */
+	 *
+	 * Special Thanks To:
+	 * Gooogle - Droid Mono font from Google Font Directory - http://code.google.com/webfonts
+	 * 
+  	 */
 	
 	import com.ericcarlisle.howler.android.*;
 	
@@ -126,7 +130,7 @@
 			textFormat.color = 0x00FF00;
 			textFormat.leftMargin = 40;
 			textFormat.rightMargin = 40;
-			textFormat.size = 24;
+			textFormat.size = 30;
 			textFormat.font = DroidMono(new DroidMono()).fontName;
 			
 			// Create UI elements.
@@ -227,51 +231,6 @@
 			}
 			txtID3.htmlText = Vizualization.formatID3Data(song, stage.orientation);
 		}
-				
-		/**
-		 * Updates the waveform visualizer display. 
-		 */
-		private function UpdateVisualizer():void
-		{
-			var bytes:ByteArray = new ByteArray();	// ByteArray containing spectrum data.
-			var n:Number = 0;						// Sampled float of bytearray data.
-			var sum:int = 0;						// Sum of bytes collected in a group.
-			var ave:int = 0;						// Average of bytes collected in a group.
-			var samplesPerGroup:int = 63;			// Number of bytes in a group.
-			var barWidth:int = 50;					// Width of rectangle that represents a group of bytes.
-			var vizualizerHeight:uint = sqw*4;		// Height of the visualizer sprite.
-			var x:int;
-			
-			// Place spectrum data in a bytearray.
-			SoundMixer.computeSpectrum(bytes, false, 0);
-
-			// Clear all graphics from the visualizer sprite.
-			var g:Graphics = this.visualizer.graphics;
-			g.clear();	
-			
-			// Set line and fill styles.
-			g.lineStyle(1,0x00FF00,0.50);
-			g.beginFill(0x00FF00, 0.25);
-			
-			for (var i:int = 0; i < 512; i++)
-			{
-				n = Math.floor(Math.abs(bytes.readFloat() * vizualizerHeight));
-				if (i % samplesPerGroup != 0)
-				{
-					sum = sum + n;
-				}
-				else if (i != 0)
-				{
-					ave = sum/samplesPerGroup;
-					x = (sqw/2) + ((i/samplesPerGroup)-1) * barWidth;
-					g.drawRect(x,sqw*3,barWidth-5,-ave);
-					sum = 0;
-				}
-			}
-			
-			g.endFill();
-		}
-
 
 		/**
 		 * Frame-specific logic.
@@ -280,7 +239,8 @@
 		{
 			if (song.loaded)
 			{
-				this.UpdateVisualizer();
+				visualizer.graphics.clear();
+				Vizualization.BuildWaveForm(visualizer,sqw);
 			}
 		}
 		
@@ -327,7 +287,7 @@
 		public function soundLoaded(event:Event):void
 		{
 			song.loaded = true;
-			txtID3.htmlText = Vizualizer.formatID3Data(song, stage.orientation);
+			txtID3.htmlText = Vizualization.formatID3Data(song, stage.orientation);
 			song.duration = sound.length;
 			channel = sound.play(position,0,stransform);
 			btnPlay.visible = false;
