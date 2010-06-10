@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Graphic version="2.0" xmlns="http://ns.adobe.com/fxg/2008" xmlns:d="http://ns.adobe.com/fxg/2008/dt" xmlns:fc="http://ns.adobe.com/flashcatalyst/2009"  viewHeight= "161" viewWidth= "161">
+	<Library>
+	</Library>
+
+	<Group d:type="layer" d:layerType="page" d:userLabel="Up" d:pageWidth="161" d:pageHeight="161">
+		<Rect x="0" y="0" width="161" height="161" fc:isBackgroundRectangle="true" d:userLabel="Background" d:locked="true">
+			<fill>
+				<SolidColor color="#000000"/>
+			</fill>
+		</Rect>
+		<Group d:userLabel="Layer_1" d:type="layer">
+			<Group d:userLabel="Group_1">
+				<Rect x="0" y="0" width="1" height="161" alpha="1" blendMode="normal" radiusX="0" radiusY="0">
+					<fill>
+						<SolidColor color="#00ff00"/>
+					</fill>
+				</Rect>
+				<Rect x="80" y="0" width="1" height="161" alpha="1" blendMode="normal" radiusX="0" radiusY="0">
+					<fill>
+						<SolidColor color="#00ff00"/>
+					</fill>
+				</Rect>
+				<Rect x="160" y="0" width="1" height="161" alpha="1" blendMode="normal" radiusX="0" radiusY="0">
+					<fill>
+						<SolidColor color="#00ff00"/>
+					</fill>
+				</Rect>
+				<Rect x="0" y="0" width="161" height="1" alpha="1" blendMode="normal" radiusX="0" radiusY="0">
+					<fill>
+						<SolidColor color="#00ff00"/>
+					</fill>
+				</Rect>
+				<Rect x="0" y="80" width="161" height="1" alpha="1" blendMode="normal" radiusX="0" radiusY="0">
+					<fill>
+						<SolidColor color="#00ff00"/>
+					</fill>
+				</Rect>
+				<Rect x="0" y="160" width="161" height="1" alpha="1" blendMode="normal" radiusX="0" radiusY="0">
+					<fill>
+						<SolidColor color="#00ff00"/>
+					</fill>
+				</Rect>
+			</Group>
+			<Path winding="evenOdd" data="M 60 110 L 60 50 L 120 80 L 60 110 Z " blendMode="normal" alpha="1" d:userLabel="Polygon">
+				<fill>
+					<SolidColor color="#00ff00"/>
+				</fill>
+			</Path>
+		</Group>
+	</Group>
+	<Group d:type="layer" d:layerType="page" d:userLabel="Over" d:pageWidth="161" d:pageHeight="161">
+		<Rect x="0" y="0" width="161" height="161" fc:isBackgroundRectangle="true" d:userLabel="Background" d:locked="true">
+			<fill>
+				<SolidColor color="#000000"/>
+			</fill>
+		</Rect>
+		<Group d:userLabel="Layer_1" d:type="layer">
+			<Rect x="0" y="0" width="161" height="161" alpha="0.2" blendMode="normal" radiusX="0" radiusY="0">
+				<fill>
+					<SolidColor color="#00ff00"/>
+				</fill>
+			</Rect>
+			<Group d:userLabel="Group_2">
+				<Rect x="0" y="0" width="1" height="161" alpha="1" blendMode="normal" radiusX="0" radiusY="0">
+					<fill>
+						<SolidColor color="#00ff00"/>
+					</fill>
+				</Rect>
+				<Rect x="80" y="0" width="1" height="161" alpha="1" blendMode="normal" radiusX="0" radiusY="0">
+					<fill>
+						<SolidColor color="#00ff00"/>
+					</fill>
+				</Rect>
+				<Rect x="160" y="0" width="1" height="161" alpha="1" blendMode="normal" radiusX="0" radiusY="0">
+					<fill>
+						<SolidColor color="#00ff00"/>
+					</fill>
+				</Rect>
+				<Rect x="0" y="0" width="161" height="1" alpha="1" blendMode="normal" radiusX="0" radiusY="0">
+					<fill>
+						<SolidColor color="#00ff00"/>
+					</fill>
+				</Rect>
+				<Rect x="0" y="80" width="161" height="1" alpha="1" blendMode="normal" radiusX="0" radiusY="0">
+					<fill>
+						<SolidColor color="#00ff00"/>
+					</fill>
+				</Rect>
+				<Rect x="0" y="160" width="161" height="1" alpha="1" blendMode="normal" radiusX="0" radiusY="0">
+					<fill>
+						<SolidColor color="#00ff00"/>
+					</fill>
+				</Rect>
+			</Group>
+			<Path winding="evenOdd" data="M 60 110 L 60 50 L 120 80 L 60 110 Z " blendMode="normal" alpha="1" d:userLabel="Polygon">
+				<fill>
+					<SolidColor color="#00ff00"/>
+				</fill>
+			</Path>
+		</Group>
+	</Group>
+	<Group d:type="layer" d:layerType="page" d:userLabel="Down" d:pageWidth="161" d:pageHeight="161">
+		<Rect x="0" y="0" width="161" height="161" fc:isBackgroundRectangle="true" d:userLabel="Background" d:locked="true">
+			<fill>
+				<SolidColor color="#000000"/>
+			</fill>
+		</Rect>
+		<Group d:userLabel="Layer_1" d:type="layer">
+			<Rect x="0" y="0" width="161" height="161" alpha="0.2" blendMode="normal" radiusX="0" radiusY="0">
+				<fill>
+					<SolidColor color="#00ff00"/>
+				</fill>
+			</Rect>
+			<Group d:userLabel="Group_3">
+				<Rect x="0" y="0" width="1" height="161" alpha="1" blendMode="normal" radiusX="0" radiusY="0">
+					<fill>
+						<SolidColor color="#00ff00"/>
+					</fill>
+				</Rect>
+				<Rect x="80" y="0" width="1" height="161" alpha="1" blendMode="normal" radiusX="0" radiusY="0">
+					<fill>
+						<SolidColor color="#00ff00"/>
+					</fill>
+				</Rect>
+				<Rect x="160" y="0" width="1" height="161" alpha="1" blendMode="normal" radiusX="0" radiusY="0">
+					<fill>
+						<SolidColor color="#00ff00"/>
+					</fill>
+				</Rect>
+				<Rect x="0" y="0" width="161" height="1" alpha="1" blendMode="normal" radiusX="0" radiusY="0">
+					<fill>
+						<SolidColor color="#00ff00"/>
+					</fill>
+				</Rect>
+				<Rect x="0" y="80" width="161" height="1" alpha="1" blendMode="normal" radiusX="0" radiusY="0">
+					<fill>
+						<SolidColor color="#00ff00"/>
+					</fill>
+				</Rect>
+				<Rect x="0" y="160" width="161" height="1" alpha="1" blendMode="normal" radiusX="0" radiusY="0">
+					<fill>
+						<SolidColor color="#00ff00"/>
+					</fill>
+				</Rect>
+			</Group>
+			<Path winding="evenOdd" data="M 60 110 L 60 50 L 120 80 L 60 110 Z " blendMode="normal" alpha="1" d:userLabel="Polygon">
+				<fill>
+					<SolidColor color="#00ff00"/>
+				</fill>
+			</Path>
+		</Group>
+	</Group>
+	<Group d:type="layer" d:layerType="page" d:userLabel="Hit" d:pageWidth="161" d:pageHeight="161">
+		<Rect x="0" y="0" width="161" height="161" fc:isBackgroundRectangle="true" d:userLabel="Background" d:locked="true">
+			<fill>
+				<SolidColor color="#000000"/>
+			</fill>
+		</Rect>
+		<Group d:userLabel="Layer_1" d:type="layer">
+			<Group d:userLabel="Group_4">
+				<Rect x="0" y="0" width="1" height="161" alpha="1" blendMode="normal" radiusX="0" radiusY="0">
+					<fill>
+						<SolidColor color="#00ff00"/>
+					</fill>
+				</Rect>
+				<Rect x="80" y="0" width="1" height="161" alpha="1" blendMode="normal" radiusX="0" radiusY="0">
+					<fill>
+						<SolidColor color="#00ff00"/>
+					</fill>
+				</Rect>
+				<Rect x="160" y="0" width="1" height="161" alpha="1" blendMode="normal" radiusX="0" radiusY="0">
+					<fill>
+						<SolidColor color="#00ff00"/>
+					</fill>
+				</Rect>
+				<Rect x="0" y="0" width="161" height="1" alpha="1" blendMode="normal" radiusX="0" radiusY="0">
+					<fill>
+						<SolidColor color="#00ff00"/>
+					</fill>
+				</Rect>
+				<Rect x="0" y="80" width="161" height="1" alpha="1" blendMode="normal" radiusX="0" radiusY="0">
+					<fill>
+						<SolidColor color="#00ff00"/>
+					</fill>
+				</Rect>
+				<Rect x="0" y="160" width="161" height="1" alpha="1" blendMode="normal" radiusX="0" radiusY="0">
+					<fill>
+						<SolidColor color="#00ff00"/>
+					</fill>
+				</Rect>
+			</Group>
+			<Path winding="evenOdd" data="M 60 110 L 60 50 L 120 80 L 60 110 Z " blendMode="normal" alpha="1" d:userLabel="Polygon">
+				<fill>
+					<SolidColor color="#00ff00"/>
+				</fill>
+			</Path>
+		</Group>
+	</Group>
+</Graphic>
