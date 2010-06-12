@@ -1,9 +1,11 @@
-package com.ericcarlisle.howler.android
+﻿package com.ericcarlisle.howler.android
 {
 	import flash.display.StageOrientation;
 	import flash.display.Sprite;
+	import flash.display.MovieClip;
 	import flash.utils.ByteArray;
 	import flash.media.SoundMixer;
+	import flash.display.DisplayObject;
 		
 	public class Vizualization
 	{
@@ -15,26 +17,20 @@ package com.ericcarlisle.howler.android
 		/**
 		 * Builds the wireframe background
 		 */
-		public static function buildWireFrame(stageWidth:Number, stageHeight:Number, squareWidth:Number):Sprite
+		public static function buildWireFrame(mc:MovieClip, stageWidth:Number, stageHeight:Number, squareWidth:Number):void
 		{	
-			var sprite:Sprite = new Sprite();
+			mc.graphics.beginFill(0x000000,1);
+			mc.graphics.lineStyle(1,0x00FF00,0.5);
 			
 			// Draw squares for wireframe grid.
 			for (var i:uint=0; i<stageWidth; i=i+squareWidth)
 			{
 				for (var j:uint=0; j<stageHeight; j=j+squareWidth)
 				{
-					var square:Sprite = new Sprite();
-					square.graphics.beginFill(0x000000,1);
-					square.graphics.lineStyle(1,0x00FF00,0.5);
-					square.graphics.drawRect(0,0,squareWidth,squareWidth);
-					square.graphics.endFill();
-					square.x = i;
-					square.y = j;
-					sprite.addChild(square);
+					mc.graphics.drawRect(i,j,squareWidth,squareWidth);
 				}
 			}
-			return sprite;			
+			mc.graphics.endFill();
 		}
 	
 		/**
@@ -129,6 +125,15 @@ package com.ericcarlisle.howler.android
 			g.endFill();
 			
 			return sprite;
+		}
+		
+		public static function setAppearance(obj:DisplayObject, x:Number, y:Number, width:Number, height:Number, rotation:Number)
+		{
+			obj.x = x;
+			obj.y = y;
+			obj.width = width;
+			obj.height = height;
+			obj.rotation = rotation;
 		}
 	}
 }
