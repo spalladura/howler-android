@@ -66,26 +66,30 @@
 	import flash.ui.Multitouch;
 	import flash.ui.MultitouchInputMode;
 		
-	public class HowlerAndroid extends MovieClip {
+	public class HowlerAndroid extends MovieClip
+	{
 		
 		
-		private var file:File;													// File object for loading sound
-		private var sound:Sound;												// Sound object
-		private var channel:SoundChannel = new SoundChannel();					// Sound channel
-		private var stransform:SoundTransform = new SoundTransform(1,0);		// Sound tranform
-		private var song:Song = new Song();										// Sound metadata
-		private var position:uint = 0;											// Sound position
+		private var file:File;															// File object for loading sound
+		private var sound:Sound;														// Sound object
+		private var channel:SoundChannel = new SoundChannel();							// Sound channel
+		private var stransform:SoundTransform = new SoundTransform(1,0);				// Sound tranform
+		private var song:Song = new Song();												// Sound metadata
+		private var position:uint = 0;													// Sound position
 		
-		private var visualizer:Sprite;											// sprite to hold waveform visualizer.
+		private var mcVisualizer:MovieClip;
+		
 		private var playMode:String = PlayModes.STOP;
 		private var isScrubbing:Boolean = false;
 		
+		private const IS_DEBUG_MODE:Boolean = true;
+
 		private var screenRect:Rectangle = Screen.mainScreen.visibleBounds;
-		private var stageWidth:Number = screenRect.width;						// the stage's width
-		private var stageHeight:Number = screenRect.height;						// the stage's height
-		private var sqw:Number = stageWidth/6;									// width for wireframe grid square
+		private const STAGE_WIDTH:Number = (IS_DEBUG_MODE) ? 480 : screenRect.width;	// the stage's width
+		private const STAGE_HEIGHT:Number = (IS_DEBUG_MODE) ? 800 :screenRect.height;	// the stage's height
+		private const SQUARE_WIDTH:Number = STAGE_WIDTH/6;								// width of a single wireframe grid square
 		
-		private var textFormat:TextFormat;										// textformat for txtID3
+		private var textFormat:TextFormat;												// textformat for txtID3
 
 		/**
 		 * Class constructor
@@ -97,14 +101,12 @@
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 
 			// Create background sprite with wireframe grid.
-			Vizualization.buildWireFrame(background,stageWidth,stageHeight,sqw);
+			Vizualization.buildWireFrame(background,STAGE_WIDTH,STAGE_HEIGHT,SQUARE_WIDTH);
 			
-			// Create visualizer sprite to contain graphics or spectrum waveform.
-			visualizer = new Sprite();
-			visualizer.x = 0; 
-			visualizer.y = sqw * 1;
-			addChild(visualizer);
-						
+			// Create mcVisualizer sprite to contain graphics or spectrum waveform.
+			mcVisualizer = new MovieClip();
+			this.addChild(mcVisualizer);
+
 			// Set text formatting for all textfields.
 			textFormat = new TextFormat();
 			textFormat.color = 0x00FF00;
@@ -118,11 +120,12 @@
 			// Set position of stage elements based on screen orientation.
 			positionStageElements();
 
-			// Clear the visualizer.
-			visualizer.graphics.clear(); // TODO: THIS DOESN'T WORK
+			// Clear the mcVisualizer.
+			mcVisualizer.graphics.clear(); // TODO: THIS DOESN'T WORK
 
 			mcScrubber.addEventListener(MouseEvent.MOUSE_DOWN, scrubberStartDrag);
 			mcScrubber.addEventListener(MouseEvent.MOUSE_UP, scrubberStopDrag);
+			mcScrubber.addEventListener(MouseEvent.MOUSE_OUT, scrubberStopDrag);
 			
 			// Attach event listeners to UI elements.
 			btnOpen.addEventListener(MouseEvent.CLICK, openFile);
@@ -137,7 +140,7 @@
 			// Attach event listeners for device orientation change.
 			stage.addEventListener(StageOrientationEvent.ORIENTATION_CHANGE, onOrientationChange); 
 
-			// Enter-frame events (updates the visualizer);
+			// Enter-frame events (updates the mcVisualizer);
 			this.addEventListener(Event.ENTER_FRAME, enterFrame);
 		}
 		
@@ -148,46 +151,28 @@
 		{
 			if (stage.orientation == StageOrientation.ROTATED_RIGHT)
 			{
-				Vizualization.setAppearance(background,0,stageWidth,stageWidth,stageHeight,270);
-				Vizualization.setAppearance(btnPlay,sqw*4,sqw*3,sqw,sqw,0);
-				Vizualization.setAppearance(btnPause,sqw*4,sqw*3,sqw,sqw,0);
-				Vizualization.setAppearance(btnExit,sqw*9,0,sqw,sqw,0);
-				Vizualization.setAppearance(txtID3,0,sqw,sqw*10,sqw*2,0);
-				Vizualization.setAppearance(visualizer,0,sqw,sqw*10,sqw*2,0);
-				
-				
-				//background.rotation = 270;
-				//background.y  = stageWidth;
-				//btnPlay.y = sqw * 3;
-				//btnPlay.x = sqw * 4;
-				//btnPause.y = sqw * 3;
-				//btnPause.x = sqw * 4;
-				//btnExit.x = sqw * 9;
-				//txtID3.y = sqw * 1;
-				//txtID3.width = sqw * 10;
-				//txtID3.height = sqw * 2;
-				//visualizer.x = 0;
-				//visualizer.y = sqw * 1;
+				Vizualization.setAppearance(background,0,STAGE_WIDTH,NaN,NaN,270);
+				Vizualization.setAppearance(btnPlay,0,3,1,1,0,SQUARE_WIDTH);
+				Vizualization.setAppearance(btnPause,0,4,1,1,0,SQUARE_WIDTH);
+				Vizualization.setAppearance(btnOpen,0,0,1,1,0,SQUARE_WIDTH);
+				Vizualization.setAppearance(btnExit,9,0,1,1,0,SQUARE_WIDTH);
+				Vizualization.setAppearance(txtID3,0,1,10,2,0,SQUARE_WIDTH);
+				Vizualization.setAppearance(mcVisualizer,0,1,NaN,NaN,0,SQUARE_WIDTH);
+				Vizualization.setAppearance(mcTrack,0,4,10,1,0,SQUARE_WIDTH);
+				Vizualization.setAppearance(mcScrubber,0,4,1,1,0,SQUARE_WIDTH);
 			}
 			else
 			{
-				Vizualization.setAppearance(background,0,0,stageWidth,stageHeight,0);
-				Vizualization.setAppearance(btnPlay,sqw*2,sqw*7,sqw*2,sqw*2,0);
-				Vizualization.setAppearance(btnPause,sqw*2,sqw*7,sqw*2,sqw*2,0);
-				Vizualization.setAppearance(btnExit,sqw*5,0,sqw,sqw,0);
-				Vizualization.setAppearance(txtID3,0,sqw,sqw*6,sqw*3,0);
-				Vizualization.setAppearance(visualizer,0,sqw,sqw*6,sqw*3,0);
-
-				//background.rotation = 0;
-				//background.y = 0;
-				//btnPause.x = sqw * 2;
-				//btnPause.y = sqw * 7;
-				//btnPlay.x = sqw * 2;
-				//btnPlay.y = sqw * 7;
-				//btnExit.x = sqw * 5;
-				//txtID3.width = sqw * 6;
-				//txtID3.height = sqw * 4;
-				//txtID3.y = sqw * 1.5;
+				Vizualization.setAppearance(background,0,0,NaN,NaN,0);
+				Vizualization.setAppearance(btnPlay,2,7,2,2,0,SQUARE_WIDTH);
+				Vizualization.setAppearance(btnPause,2,7,2,2,0,SQUARE_WIDTH);
+				Vizualization.setAppearance(btnOpen,0,0,1,1,0,SQUARE_WIDTH);
+				Vizualization.setAppearance(btnExit,5,0,1,1,0,SQUARE_WIDTH);
+				Vizualization.setAppearance(txtID3,0,1,6,3,0,SQUARE_WIDTH);
+				Vizualization.setAppearance(mcVisualizer,0,1,NaN,NaN,0,SQUARE_WIDTH);
+				Vizualization.setAppearance(mcTrack,0,5,6,1,0,SQUARE_WIDTH);
+				// TODO - figure out position for playing clip
+				Vizualization.setAppearance(mcScrubber,0,5,1,1,0,SQUARE_WIDTH);
 			}
 			txtID3.htmlText = Vizualization.formatID3Data(song, stage.orientation);
 		}
@@ -199,14 +184,13 @@
 		{
 			if (song.loaded)
 			{
-				visualizer.graphics.clear();
-				Vizualization.BuildWaveForm(visualizer,sqw,stage.orientation);
+				Vizualization.BuildWaveForm(mcVisualizer,SQUARE_WIDTH,stage.orientation);
 			}
 			
 			if (playMode == PlayModes.PLAY && !isScrubbing)
 			{
 				var pos:uint = channel.position;
-				mcScrubber.x = 10 + (pos/song.duration)*(stageWidth-mcScrubber.width-10);
+				mcScrubber.x = (pos/song.duration)*(STAGE_WIDTH-mcScrubber.width);
 			}
 		}
 		
@@ -256,6 +240,8 @@
 			txtID3.htmlText = Vizualization.formatID3Data(song, stage.orientation);
 			song.duration = sound.length;
 			channel = sound.play(0,0,stransform);
+			channel.addEventListener(Event.SOUND_COMPLETE, soundComplete);
+			//addChild(Vizualization.getMp3CoverArt(sound as File));
 			playMode = PlayModes.PLAY;
 			btnPlay.visible = false;
 		}
@@ -265,9 +251,12 @@
 		 */
 		public function playClick(event:Event):void
 		{
-			btnPlay.visible = false;
-			channel = sound.play(position);
-			playMode = PlayModes.PLAY;
+			if (song.loaded)
+			{
+				btnPlay.visible = false;
+				channel = sound.play(position);
+				playMode = PlayModes.PLAY;
+			}
 		}
 
 		/**
@@ -275,10 +264,13 @@
 		 */
 		public function pauseClick(event:Event):void
 		{
-			btnPlay.visible = true;
-			position = channel.position;
-			channel.stop();
-			playMode = PlayModes.STOP;
+			if (song.loaded)
+			{
+				btnPlay.visible = true;
+				position = channel.position;
+				channel.stop();
+				playMode = PlayModes.STOP;
+			}
 		}
 		
 		/**
@@ -286,8 +278,7 @@
 		 */
 		public function applicationDeactivate(event:Event):void
 		{
-			channel.stop();
-			playMode = PlayModes.STOP;
+			// TODO - stop all frame specific animation
 		}
 
 		/**
@@ -295,8 +286,7 @@
 		 */
 		public function applicationActivate(event:Event):void
 		{
-			channel.stop();
-			playMode = PlayModes.STOP;
+			// TODO - restart all frame specific animation
 		}
 
 		/**
@@ -316,23 +306,40 @@
 		}
 		
 		/**
+		 * 
+		 */
+		public function soundComplete(event:Event)
+		{
+			channel.removeEventListener(Event.SOUND_COMPLETE, soundComplete);
+			mcScrubber.x = 0;
+			btnPlay.visible = true;
+			position = 0;
+		}
+		
+		/**
 		 * Handler for scrubber mouse-down
 		 */
 		public function scrubberStartDrag(event:MouseEvent):void
 		{
-			isScrubbing = true;
-			MovieClip(event.target).startDrag(false, new Rectangle(10,410,stageWidth-mcScrubber.width-20,0));
+			if (this.playMode == PlayModes.PLAY)
+			{
+				isScrubbing = true;
+				MovieClip(event.target).startDrag(false, new Rectangle(mcTrack.x,mcTrack.y,mcTrack.width-mcScrubber.width,0));
+			}
 		}
 
 		/**
-		 * Handler for scrubber mouse-up
+		 * Handler for scrubber mouse-up & mouse out
 		 */
 		public function scrubberStopDrag(event:MouseEvent):void
 		{
-			isScrubbing = false;
-			channel.stop();
-			channel = sound.play(song.duration *(mcScrubber.x/(stageWidth-mcScrubber.width-20)));
-			MovieClip(event.target).stopDrag();
+			if (this.playMode == PlayModes.PLAY && this.isScrubbing)
+			{
+				isScrubbing = false;
+				channel.stop();
+				channel = sound.play(song.duration *(mcScrubber.x/(STAGE_WIDTH-mcScrubber.width)));
+				MovieClip(event.target).stopDrag();
+			}
 		}
 	}
 }

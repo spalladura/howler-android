@@ -8,26 +8,9 @@
 			<fill>
 				<SolidColor color="#000000"/>
 			</fill>
+			<stroke>
+				<SolidColorStroke color="#00ff00" weight="1" caps="none"/>
+			</stroke>
 		</Rect>
-		<Path winding="evenOdd" data="M 0 0 L 1 0 L 1 81 L 0 81 L 0 0 Z " blendMode="normal" alpha="1">
-			<fill>
-				<SolidColor color="#33ff00"/>
-			</fill>
-		</Path>
-		<Path winding="evenOdd" data="M 479 0 L 480 0 L 480 81 L 479 81 L 479 0 Z " blendMode="normal" alpha="1">
-			<fill>
-				<SolidColor color="#33ff00"/>
-			</fill>
-		</Path>
-		<Path winding="evenOdd" data="M 0 0 L 480 0 L 480 1 L 0 1 L 0 0 Z " blendMode="normal" alpha="1">
-			<fill>
-				<SolidColor color="#33ff00"/>
-			</fill>
-		</Path>
-		<Path winding="evenOdd" data="M 0 80 L 480 80 L 480 81 L 0 81 L 0 80 Z " blendMode="normal" alpha="1">
-			<fill>
-				<SolidColor color="#33ff00"/>
-			</fill>
-		</Path>
 	</Group>
 </Graphic>
