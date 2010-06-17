@@ -116,12 +116,11 @@
 			textFormat.font = DroidSans(new DroidSans()).fontName;
 			
 			txtID3.defaultTextFormat = textFormat;
-			
+
+			txtID3.text = "";
+
 			// Set position of stage elements based on screen orientation.
 			positionStageElements();
-
-			// Clear the mcVisualizer.
-			mcVisualizer.graphics.clear(); // TODO: THIS DOESN'T WORK
 
 			mcScrubber.addEventListener(MouseEvent.MOUSE_DOWN, scrubberStartDrag);
 			mcScrubber.addEventListener(MouseEvent.MOUSE_UP, scrubberStopDrag);
@@ -152,14 +151,14 @@
 			if (stage.orientation == StageOrientation.ROTATED_RIGHT)
 			{
 				Vizualization.setAppearance(background,0,STAGE_WIDTH,NaN,NaN,270);
-				Vizualization.setAppearance(btnPlay,0,3,1,1,0,SQUARE_WIDTH);
-				Vizualization.setAppearance(btnPause,0,4,1,1,0,SQUARE_WIDTH);
+				Vizualization.setAppearance(btnPlay,4,4,2,1,0,SQUARE_WIDTH);
+				Vizualization.setAppearance(btnPause,4,4,2,1,0,SQUARE_WIDTH);
 				Vizualization.setAppearance(btnOpen,0,0,1,1,0,SQUARE_WIDTH);
 				Vizualization.setAppearance(btnExit,9,0,1,1,0,SQUARE_WIDTH);
-				Vizualization.setAppearance(txtID3,0,1,10,2,0,SQUARE_WIDTH);
+				Vizualization.setAppearance(txtID3,0,1.3,10,2,0,SQUARE_WIDTH);
 				Vizualization.setAppearance(mcVisualizer,0,1,NaN,NaN,0,SQUARE_WIDTH);
-				Vizualization.setAppearance(mcTrack,0,4,10,1,0,SQUARE_WIDTH);
-				Vizualization.setAppearance(mcScrubber,0,4,1,1,0,SQUARE_WIDTH);
+				Vizualization.setAppearance(mcTrack,0,3,10,1,0,SQUARE_WIDTH);
+				Vizualization.setAppearance(mcScrubber,0,3,1,1,0,SQUARE_WIDTH);
 			}
 			else
 			{
@@ -168,7 +167,7 @@
 				Vizualization.setAppearance(btnPause,2,7,2,2,0,SQUARE_WIDTH);
 				Vizualization.setAppearance(btnOpen,0,0,1,1,0,SQUARE_WIDTH);
 				Vizualization.setAppearance(btnExit,5,0,1,1,0,SQUARE_WIDTH);
-				Vizualization.setAppearance(txtID3,0,1,6,3,0,SQUARE_WIDTH);
+				Vizualization.setAppearance(txtID3,0,1.3,6,3,0,SQUARE_WIDTH);
 				Vizualization.setAppearance(mcVisualizer,0,1,NaN,NaN,0,SQUARE_WIDTH);
 				Vizualization.setAppearance(mcTrack,0,5,6,1,0,SQUARE_WIDTH);
 				// TODO - figure out position for playing clip
@@ -180,17 +179,28 @@
 		/**
 		 * Frame-specific logic.
 		 */
-		public function enterFrame(event:Event)
+		private function enterFrame(event:Event)
 		{
 			if (song.loaded)
 			{
-				Vizualization.BuildWaveForm(mcVisualizer,SQUARE_WIDTH,stage.orientation);
+				Vizualization.BuildWaveForm(mcVisualizer,SQUARE_WIDTH,STAGE_WIDTH,STAGE_HEIGHT,stage.orientation);
 			}
+			setScrubberPosition();
 			
+		}
+		
+		private function setScrubberPosition():void
+		{
 			if (playMode == PlayModes.PLAY && !isScrubbing)
 			{
-				var pos:uint = channel.position;
-				mcScrubber.x = (pos/song.duration)*(STAGE_WIDTH-mcScrubber.width);
+				if (stage.orientation == StageOrientation.ROTATED_RIGHT)
+				{
+					mcScrubber.x = (channel.position/song.duration)*(STAGE_HEIGHT-mcScrubber.width);
+				}
+				else
+				{
+					mcScrubber.x = (channel.position/song.duration)*(STAGE_WIDTH-mcScrubber.width);
+				}
 			}
 		}
 		
@@ -209,6 +219,10 @@
 		 */
 		public function soundSelected(event:Event):void
 		{
+			// clean up
+			SoundMixer.stopAll();
+			file.removeEventListener(Event.SELECT, soundSelected);
+
 			txtID3.text = "Loading...";
 			song.url = file.url;
 			sound = new Sound(new URLRequest(file.url));
@@ -221,6 +235,8 @@
 		 */
 		public function loadID3Data(event:Event):void
 		{
+			sound.removeEventListener(Event.ID3, loadID3Data);
+			
 			song.album = sound.id3.album;	
 			song.artist = sound.id3.artist;	
 			song.comment = sound.id3.comment;	
@@ -236,6 +252,8 @@
 		 */
 		public function soundLoaded(event:Event):void
 		{
+			sound.removeEventListener(Event.COMPLETE, soundLoaded);
+			
 			song.loaded = true;
 			txtID3.htmlText = Vizualization.formatID3Data(song, stage.orientation);
 			song.duration = sound.length;
@@ -313,7 +331,6 @@
 			channel.removeEventListener(Event.SOUND_COMPLETE, soundComplete);
 			mcScrubber.x = 0;
 			btnPlay.visible = true;
-			position = 0;
 		}
 		
 		/**
@@ -337,7 +354,14 @@
 			{
 				isScrubbing = false;
 				channel.stop();
-				channel = sound.play(song.duration *(mcScrubber.x/(STAGE_WIDTH-mcScrubber.width)));
+				if (stage.orientation == StageOrientation.ROTATED_RIGHT)
+				{
+					channel = sound.play(song.duration *(mcScrubber.x/(STAGE_HEIGHT-mcScrubber.width)));
+				}
+				else
+				{
+					channel = sound.play(song.duration *(mcScrubber.x/(STAGE_WIDTH-mcScrubber.width)));
+				}
 				MovieClip(event.target).stopDrag();
 			}
 		}
