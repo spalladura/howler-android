@@ -47,7 +47,7 @@
 			{
 				if (orientation == StageOrientation.ROTATED_RIGHT)
 				{
-					formattedData = song.track + ". " + song.songName + "<br>" + song.artist + " - " + song.album + " (" + song.year + ") ";
+					formattedData = song.track + ". " + song.songName + "<br>" + song.album + " (" + song.year + ")<br>" + song.artist;
 				}
 				else
 				{
@@ -64,13 +64,13 @@
 		/**
 		 * Updates the waveform visualizer display. 
 		 */
-		public static function BuildWaveForm(sprite:Sprite, squareWidth:Number,  orientation:String):void
+		public static function BuildWaveForm(sprite:Sprite, squareWidth:Number, screenWidth:Number, screenHeight:Number, orientation:String):void
 		{
 			var bytes:ByteArray = new ByteArray();		// ByteArray containing spectrum data.
 			var b:Number = 0;							// Sampled float of bytearray data.
 			var top:int = 0;							// The highest byte value in a group.
 			var samplesPerGroup:int = 63;				// Number of bytes in a group.
-			var barWidth:int = 50;						// Width of rectangle that represents a group of bytes.
+			var barWidth:int;						// Width of rectangle that represents a group of bytes.
 			var vizualizerHeight:uint;					// Height of the visualizer sprite.
 			var barX:int;								// x-coordinate of each vizualization bar.
 			var y:int;									// y-coordinate for the entire visualization.
@@ -78,17 +78,17 @@
 			var h:int;									// height of each vizualization bar.
 
 			// Determine the left margin based on device orientation.
+			xMargin = squareWidth/2;
+
 			if (orientation == StageOrientation.ROTATED_RIGHT)
 			{
-				xMargin = squareWidth*2
-				barWidth = 70;
+				barWidth = (screenHeight-squareWidth)/8;
 				y = squareWidth*2;
 				vizualizerHeight = squareWidth*2;
 			}
 			else
 			{
-				xMargin = squareWidth * 0.5;
-				barWidth = 50;
+				barWidth = (screenWidth-squareWidth)/8;
 				y = squareWidth*3;
 				vizualizerHeight = squareWidth*3;
 			}
@@ -140,6 +140,8 @@
 			if (!isNaN(height)) obj.height = height * multiplier;
 			if (!isNaN(rotation)) obj.rotation = rotation;
 		}
+		
+
 		
 		
 		/**
