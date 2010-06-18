@@ -77,6 +77,8 @@
 		private var song:Song = new Song();												// Sound metadata
 		private var position:uint = 0;													// Sound position
 		
+		private var isActiveDisplay:Boolean = true;
+		
 		private var mcVisualizer:MovieClip;
 		
 		private var playMode:String = PlayModes.STOP;
@@ -109,15 +111,17 @@
 
 			// Set text formatting for all textfields.
 			textFormat = new TextFormat();
-			textFormat.color = 0x00FF00;
+			textFormat.color = 0xFFFFFF;
 			textFormat.leftMargin = 40;
 			textFormat.rightMargin = 40;
 			textFormat.size = 30;
 			textFormat.font = DroidSans(new DroidSans()).fontName;
 			
 			txtID3.defaultTextFormat = textFormat;
+			txtTime.defaultTextFormat= textFormat;
 
 			txtID3.text = "";
+			txtTime.text = "";
 
 			// Set position of stage elements based on screen orientation.
 			positionStageElements();
@@ -156,9 +160,10 @@
 				Vizualization.setAppearance(btnOpen,0,0,1,1,0,SQUARE_WIDTH);
 				Vizualization.setAppearance(btnExit,9,0,1,1,0,SQUARE_WIDTH);
 				Vizualization.setAppearance(txtID3,0,1.3,10,2,0,SQUARE_WIDTH);
+				Vizualization.setAppearance(txtTime,0,3.3,10,1,0,SQUARE_WIDTH);
 				Vizualization.setAppearance(mcVisualizer,0,1,NaN,NaN,0,SQUARE_WIDTH);
 				Vizualization.setAppearance(mcTrack,0,3,10,1,0,SQUARE_WIDTH);
-				Vizualization.setAppearance(mcScrubber,0,3,1,1,0,SQUARE_WIDTH);
+				Vizualization.setAppearance(mcScrubber,0,3,1,1,0,SQUARE_WIDTH,0.75);
 			}
 			else
 			{
@@ -168,10 +173,11 @@
 				Vizualization.setAppearance(btnOpen,0,0,1,1,0,SQUARE_WIDTH);
 				Vizualization.setAppearance(btnExit,5,0,1,1,0,SQUARE_WIDTH);
 				Vizualization.setAppearance(txtID3,0,1.3,6,3,0,SQUARE_WIDTH);
+				Vizualization.setAppearance(txtTime,0,5.3,6,NaN,0,SQUARE_WIDTH);
 				Vizualization.setAppearance(mcVisualizer,0,1,NaN,NaN,0,SQUARE_WIDTH);
 				Vizualization.setAppearance(mcTrack,0,5,6,1,0,SQUARE_WIDTH);
 				// TODO - figure out position for playing clip
-				Vizualization.setAppearance(mcScrubber,0,5,1,1,0,SQUARE_WIDTH);
+				Vizualization.setAppearance(mcScrubber,0,5,1,1,0,SQUARE_WIDTH,0.75);
 			}
 			txtID3.htmlText = Vizualization.formatID3Data(song, stage.orientation);
 		}
@@ -181,11 +187,12 @@
 		 */
 		private function enterFrame(event:Event)
 		{
-			if (song.loaded)
+			if (song.loaded && isActiveDisplay)
 			{
 				Vizualization.BuildWaveForm(mcVisualizer,SQUARE_WIDTH,STAGE_WIDTH,STAGE_HEIGHT,stage.orientation);
+				setScrubberPosition();
+				txtTime.text = Utility.formatDuration(channel.position) + "/" + Utility.formatDuration(song.duration);
 			}
-			setScrubberPosition();
 			
 		}
 		
@@ -296,7 +303,7 @@
 		 */
 		public function applicationDeactivate(event:Event):void
 		{
-			// TODO - stop all frame specific animation
+			isActiveDisplay = false;
 		}
 
 		/**
@@ -304,7 +311,7 @@
 		 */
 		public function applicationActivate(event:Event):void
 		{
-			// TODO - restart all frame specific animation
+			isActiveDisplay = true;
 		}
 
 		/**

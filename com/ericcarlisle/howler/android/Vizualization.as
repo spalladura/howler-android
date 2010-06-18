@@ -132,8 +132,9 @@
 		/**
 		 * Sets the x, y, width, height, and rotation of a display object. 
 		 */
-		public static function setAppearance(obj:DisplayObject, x:Number=NaN, y:Number=NaN, width:Number=NaN, height:Number=NaN, rotation:Number=NaN, multiplier:uint=1)
+		public static function setAppearance(obj:DisplayObject, x:Number=NaN, y:Number=NaN, width:Number=NaN, height:Number=NaN, rotation:Number=NaN, multiplier:uint=1, alph:Number=1)
 		{
+			obj.alpha = alph;
 			if (!isNaN(x)) obj.x = x * multiplier;
 			if (!isNaN(y)) obj.y = y * multiplier;
 			if (!isNaN(width)) obj.width = width * multiplier;
@@ -153,10 +154,9 @@
 		 */
 		public static function getMp3CoverArt(file:File):Bitmap
 		{
-			/*
-			var binaryData :ByteArray;
-			var finalData:ByteArray = new ByteArray;
-			var byteCon:Loader = new Loader;
+			var binaryData:ByteArray;
+			var finalData:ByteArray = new ByteArray();
+			var byteCon:Loader = new Loader();
 			var offset:int;
 			var rLength:int;
 			var found:Boolean = false;
@@ -191,7 +191,7 @@
 			byteCon.loadBytes(finalData);
 			
 			return Bitmap(byteCon);
-			*/
+			trace(byteCon);
 			return new Bitmap();
 		}
 		
