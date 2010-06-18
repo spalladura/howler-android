@@ -80,7 +80,9 @@
 		private var isActiveDisplay:Boolean = true;
 		
 		private var mcVisualizer:MovieClip;
-		
+		private var visualizerColors:Array = [0x00FF00, 0xFF0000, 0x0000FF, 0xFF00FF,  0xFFFF00,  0x00FFFF]
+		private var currentColorIndex:int = 0;
+
 		private var playMode:String = PlayModes.STOP;
 		private var isScrubbing:Boolean = false;
 		
@@ -108,6 +110,7 @@
 			// Create mcVisualizer sprite to contain graphics or spectrum waveform.
 			mcVisualizer = new MovieClip();
 			this.addChild(mcVisualizer);
+			txtID3.addEventListener(MouseEvent.CLICK, changeVisualizerColor);
 
 			// Set text formatting for all textfields.
 			textFormat = new TextFormat();
@@ -176,7 +179,6 @@
 				Vizualization.setAppearance(txtTime,0,5.3,6,NaN,0,SQUARE_WIDTH);
 				Vizualization.setAppearance(mcVisualizer,0,1,NaN,NaN,0,SQUARE_WIDTH);
 				Vizualization.setAppearance(mcTrack,0,5,6,1,0,SQUARE_WIDTH);
-				// TODO - figure out position for playing clip
 				Vizualization.setAppearance(mcScrubber,0,5,1,1,0,SQUARE_WIDTH,0.75);
 			}
 			txtID3.htmlText = Vizualization.formatID3Data(song, stage.orientation);
@@ -187,9 +189,9 @@
 		 */
 		private function enterFrame(event:Event)
 		{
-			if (song.loaded && isActiveDisplay)
+			if (this.playMode == PlayModes.PLAY && isActiveDisplay)
 			{
-				Vizualization.BuildWaveForm(mcVisualizer,SQUARE_WIDTH,STAGE_WIDTH,STAGE_HEIGHT,stage.orientation);
+				Vizualization.BuildWaveForm(mcVisualizer,SQUARE_WIDTH,STAGE_WIDTH,STAGE_HEIGHT,stage.orientation, visualizerColors[currentColorIndex]);
 				setScrubberPosition();
 				txtTime.text = Utility.formatDuration(channel.position) + "/" + Utility.formatDuration(song.duration);
 			}
@@ -280,6 +282,7 @@
 			{
 				btnPlay.visible = false;
 				channel = sound.play(position);
+				channel.addEventListener(Event.SOUND_COMPLETE, soundComplete);
 				playMode = PlayModes.PLAY;
 			}
 		}
@@ -294,6 +297,7 @@
 				btnPlay.visible = true;
 				position = channel.position;
 				channel.stop();
+				channel.removeEventListener(Event.SOUND_COMPLETE, soundComplete);
 				playMode = PlayModes.STOP;
 			}
 		}
@@ -335,9 +339,12 @@
 		 */
 		public function soundComplete(event:Event)
 		{
+			trace("done");
+			this.playMode = PlayModes.STOP;
 			channel.removeEventListener(Event.SOUND_COMPLETE, soundComplete);
 			mcScrubber.x = 0;
 			btnPlay.visible = true;
+			txtTime.text = Utility.formatDuration(0) + "/" + Utility.formatDuration(song.duration);
 		}
 		
 		/**
@@ -361,6 +368,7 @@
 			{
 				isScrubbing = false;
 				channel.stop();
+				channel.removeEventListener(Event.SOUND_COMPLETE, soundComplete);
 				if (stage.orientation == StageOrientation.ROTATED_RIGHT)
 				{
 					channel = sound.play(song.duration *(mcScrubber.x/(STAGE_HEIGHT-mcScrubber.width)));
@@ -369,7 +377,20 @@
 				{
 					channel = sound.play(song.duration *(mcScrubber.x/(STAGE_WIDTH-mcScrubber.width)));
 				}
+				channel.addEventListener(Event.SOUND_COMPLETE, soundComplete);
 				MovieClip(event.target).stopDrag();
+			}
+		}
+		
+		public function changeVisualizerColor(event:Event):void
+		{
+			if (currentColorIndex < visualizerColors.length-1)
+			{
+				currentColorIndex++;
+			}
+			else
+			{
+				currentColorIndex = 0;
 			}
 		}
 	}

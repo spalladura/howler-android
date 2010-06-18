@@ -64,7 +64,7 @@
 		/**
 		 * Updates the waveform visualizer display. 
 		 */
-		public static function BuildWaveForm(sprite:Sprite, squareWidth:Number, screenWidth:Number, screenHeight:Number, orientation:String):void
+		public static function BuildWaveForm(sprite:Sprite, squareWidth:Number, screenWidth:Number, screenHeight:Number, orientation:String, color:uint):void
 		{
 			var bytes:ByteArray = new ByteArray();		// ByteArray containing spectrum data.
 			var b:Number = 0;							// Sampled float of bytearray data.
@@ -101,8 +101,8 @@
 			g.clear();
 			
 			// Set line and fill styles.
-			g.lineStyle(1,0x00FF00,0.50);
-			g.beginFill(0x00FF00, 0.25);
+			g.lineStyle(1,color,0.50);
+			g.beginFill(color, 0.25);
 			
 			// Iterate through all bytes.
 			for (var i:int = 0; i < 512; i++)
